@@ -23,11 +23,11 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: auto;
+  overflow: auto; /* Enable scrolling if needed */
 }
 
 .preview-image {
-  margin: auto;
+  margin: auto; /* Center the image */
 }
 
 .control {

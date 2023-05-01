@@ -28,6 +28,8 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
     setScale(Math.min(heightRatio, widthRatio, 1));
   };
 
+  console.log('scale: ', scale);
+
   useEffect(() => {
     fitImageToScreen();
   }, []);
@@ -40,10 +42,13 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
       return;
     }
 
+    // 이미지의 크기가 변경되기 전의 크기
     const prevWidth = image.width;
     const prevHeight = image.height;
 
-    //? flushSync를 사용하면 즉시 DOM을 업데이트할 수 있다.
+    //? flushSync를 사용하면 즉시 DOM을 업데이트할 수 있다. (동기 방식)
+    //? 기존 비동기 방식은 리액트가 업데이트를 모아서 처리하기 때문에
+    //? DOM이 업데이트되기 전에 스크롤바를 중앙에 위치시킬 수 없다.
     flushSync(() => {
       setScale(scale);
     });
@@ -68,9 +73,11 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
     fitImageToScreen();
   };
 
+  // 이미지의 원본 크기
   const originalWidth = imageRef.current?.naturalWidth ?? 0;
   const originalHeight = imageRef.current?.naturalHeight ?? 0;
 
+  // 보여줄 이미지의 크기
   const scaledDimensions = {
     width: scale * originalWidth,
     height: scale * originalHeight,
@@ -95,6 +102,7 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
           </svg>
         </button>
       </div>
+
       <div ref={containerRef} className="preview-container">
         <img
           ref={imageRef}
@@ -104,8 +112,13 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
           className="preview-image"
         />
       </div>
+
       <div className="bottom-bar">
-        <button onClick={handleZoomOutClick} className="control">
+        <button
+          aria-label="Zoom Out Button"
+          onClick={handleZoomOutClick}
+          className="control"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -120,13 +133,20 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
             />
           </svg>
         </button>
+
         <button
+          aria-label="Reset Zoom Button"
           onClick={handleZoomResetClick}
           className="control control-with-padding"
         >
           {Math.round(scale * 100)}%
         </button>
-        <button onClick={handleZoomInClick} className="control">
+
+        <button
+          aria-label="Zoom In Button"
+          onClick={handleZoomInClick}
+          className="control"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

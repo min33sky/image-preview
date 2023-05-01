@@ -16,6 +16,9 @@ function App() {
       setPreviewImg(await fileToDataString(file));
     } catch (error) {
       console.error(error);
+    } finally {
+      //? 파일 선택창 초기화 (똑같은 파일 선택 가능하도록)
+      e.target.value = '';
     }
   };
 
