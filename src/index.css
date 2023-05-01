@@ -1,0 +1,54 @@
+.image-preview {
+  position: fixed;
+  background-color: #333333;
+  inset: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.bottom-bar {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
+
+.preview-image {
+  margin: auto;
+}
+
+.control {
+  background: transparent;
+  border: none;
+  min-width: 32px;
+  min-height: 32px;
+  color: white;
+  border-radius: 99px;
+  font-family: monospace;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-with-padding {
+  padding: 0 12px;
+}
+
+.control:hover {
+  background: #444444;
+}
