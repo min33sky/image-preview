@@ -1,18 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 
-interface Props {
+interface ImagePreviewProps {
   imageSrc: string;
   onClose: () => void;
 }
 
-const ZOOM_INC = 1.1;
+const ZOOM_INCREMENT = 1.1; // 10% 증가
 
-export default function ImagePreview({ imageSrc, onClose }: Props) {
-  const imageRef = useRef<HTMLImageElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0);
+export default function ImagePreview({ imageSrc, onClose }: ImagePreviewProps) {
+  const imageRef = useRef<HTMLImageElement>(null); // 이미지 태그
+  const containerRef = useRef<HTMLDivElement>(null); // 이미지를 감싸는 div
 
+  const [scale, setScale] = useState(0); // 이미지 배율
+
+  /**
+   * 이미지를 미리보기 화면에 맞게 확대/축소하는 함수
+   */
   const fitImageToScreen = () => {
     const container = containerRef.current;
     const image = imageRef.current;
@@ -22,18 +26,22 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
     }
 
     const containerBounds = container.getBoundingClientRect();
+
     const heightRatio = containerBounds.height / image.naturalHeight;
     const widthRatio = containerBounds.width / image.naturalWidth;
 
     setScale(Math.min(heightRatio, widthRatio, 1));
   };
 
-  console.log('scale: ', scale);
-
   useEffect(() => {
     fitImageToScreen();
   }, []);
 
+  /**
+   * 이미지를 확대/축소하는 함수
+   * @param scale
+   * @returns
+   */
   const updateScale = (scale: number) => {
     const container = containerRef.current;
     const image = imageRef.current;
@@ -62,11 +70,11 @@ export default function ImagePreview({ imageSrc, onClose }: Props) {
   };
 
   const handleZoomInClick = () => {
-    updateScale(scale * ZOOM_INC);
+    updateScale(scale * ZOOM_INCREMENT);
   };
 
   const handleZoomOutClick = () => {
-    updateScale(scale / ZOOM_INC);
+    updateScale(scale / ZOOM_INCREMENT);
   };
 
   const handleZoomResetClick = () => {

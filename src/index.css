@@ -1,6 +1,6 @@
 .image-preview {
   position: fixed;
-  background-color: #333333;
+  background-color: rgba(0, 0, 0, 0.85);
   inset: 0;
   height: 100vh;
   display: flex;
